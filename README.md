@@ -14,7 +14,12 @@ npm i --save @vtfk/azure-servicebus-queue
 
 ## Connection
 
-TODO
+Get connection string for Service Bus & names for Queues/Topics/Subscriptions
+
+- In the [Azure Portal](https://portal.azure.com), go to **Dashboard > Service Bus > _your-servicebus-namespace_**.
+- Note down the "Primary Connection String" of **RootManageSharedAccessKey** at **Shared access policies** under **Settings** tab.
+- To work with Queues, find the "Queues" tab right under "Entities" at **_your-servicebus-namespace_**, create a Queue and note down its name.
+- To work with Topics, find the "Topics" tab right under "Entities" at **_your-servicebus-namespace_**, create a Topic. Go to **_your-servicebus-namespace_ > _your-topic_**, create subscriptions for the topic. Note down the names of the topic and subscriptions.
 
 ```js
 const namespace = require('./src/index')({
@@ -37,15 +42,55 @@ const queue = namespace.queue(queueName)
 Looks at mesages but don't delete
 
 ```js
-const messages = await queue.peek(6)
+const limit = 6
+const messages = await queue.peek(limit)
 ```
 
-Gives you an array of max 6 messages.
+Returns an array of max 6 messages.
 
 ### Peek messages by sequence number
 
 ```js
 const messages = await queue.peekBySequenceNumber('<sequenceNumber>')
+```
+
+## Send message
+
+```js
+const message = 'Message'
+await queue.send(message)
+```
+
+## Receive message(s)
+
+```js
+const limit = 10
+const timeoutInSeconds = 1
+const messages = await queue.receive(limit, timeoutInSeconds)
+```
+
+## Send batch
+
+```js
+const messages = [{ message: '1' }, { message: '2' }]
+await queue.sendBatch(messages)
+```
+
+## Schedule Message
+
+```js
+const dateToSend = new Date().toISOString()
+const message = 'Message'
+await queue.scheduleMessage(dateToSend, message)
+```
+
+
+## Schedule Messages
+
+```js
+const dateToSend = new Date().toISOString()
+const messages = [{ message: '1' }, { message: '2' }]
+await queue.scheduleMessages(dateToSend, messages)
 ```
 
 # Examples

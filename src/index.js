@@ -35,7 +35,7 @@ module.exports = options => {
 
   function sendBatch (messages) {
     const sender = client.getSender()
-    return sender.send(messages)
+    return sender.sendBatch(messages)
   }
 
   function scheduleMessage (date, message) {
@@ -48,8 +48,10 @@ module.exports = options => {
     return sender.scheduleMessages(date, messages)
   }
 
-  function receive () {
-    // const receiver = client.getReceiver()
+  function receive (limit = 1, timeoutInSeconds = 1) {
+    const receiver = client.getReceiver()
+    // TODO: Mark as complete i.e await messages[0].complete()
+    return receiver.receiveBatch(limit, timeoutInSeconds)
   }
 
   return {
@@ -70,7 +72,7 @@ module.exports = options => {
         sendBatch: messages => sendBatch(messages),
         scheduleMessage: (date, message) => scheduleMessage(date, message),
         scheduleMessages: (date, messages) => scheduleMessages(date, messages),
-        receive: () => receive()
+        receive: (limit, timeoutInSeconds) => receive(limit, timeoutInSeconds)
       }
     }
   }
