@@ -54,14 +54,14 @@ Returns an array of max 6 messages.
 const messages = await queue.peekBySequenceNumber('<sequenceNumber>')
 ```
 
-## Send message
+### Send message
 
 ```js
 const message = 'Message'
 await queue.send(message)
 ```
 
-## Receive message(s)
+### Receive message(s)
 
 ```js
 const limit = 10
@@ -69,14 +69,14 @@ const timeoutInSeconds = 1
 const messages = await queue.receive(limit, timeoutInSeconds)
 ```
 
-## Send batch
+### Send batch
 
 ```js
 const messages = [{ message: '1' }, { message: '2' }]
 await queue.sendBatch(messages)
 ```
 
-## Schedule Message
+### Schedule Message
 
 ```js
 const dateToSend = new Date().toISOString()
@@ -85,7 +85,7 @@ await queue.scheduleMessage(dateToSend, message)
 ```
 
 
-## Schedule Messages
+### Schedule Messages
 
 ```js
 const dateToSend = new Date().toISOString()
