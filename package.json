@@ -1,6 +1,6 @@
 {
   "name": "@vtfk/azure-servicebus-queue",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "High-level API for Azure Servicebus Queue operations",
   "main": "src/index.js",
   "author": "Jonas Enge <jonas.enge@gmail.com> (https://github.com/maccyber)",
@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@azure/service-bus": "1.0.0-preview.1"
+    "@azure/service-bus": "1.0.0-preview.2"
   },
   "repository": {
     "type": "git",

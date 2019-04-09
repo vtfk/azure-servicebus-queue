@@ -22,19 +22,89 @@ Get connection string for Service Bus & names for Queues/Topics/Subscriptions
 - To work with Topics, find the "Topics" tab right under "Entities" at **_your-servicebus-namespace_**, create a Topic. Go to **_your-servicebus-namespace_ > _your-topic_**, create subscriptions for the topic. Note down the names of the topic and subscriptions.
 
 ```js
-const namespace = require('@vtfk/azure-servicebus-queue')({
+const serviceBusClient = require('@vtfk/azure-servicebus-queue')({
   connectionString: '<Servicebus Connection String>'
 })
 ```
 
-## Namespace operations
+## Service Bus operations
+
+TODO
+
+## Subcription client operations
+
+TODO
+
+## Topic operations
+
+
+First, connect to the desired topic
+
+```js
+const topic = serviceBusClient.topic('topicName')
+```
+
+### Peek messages
+
+Looks at mesages but don't delete
+
+```js
+const limit = 6
+const messages = await topic.peek(limit)
+```
+
+Returns an array of max 6 messages.
+
+### Peek messages by sequence number
+
+```js
+const messages = await topic.peekBySequenceNumber('<sequenceNumber>')
+```
+
+### Send message
+
+```js
+const message = 'Message'
+await topic.send(message)
+```
+
+### Receive message(s)
+
+```js
+const limit = 10
+const timeoutInSeconds = 1
+const messages = await topic.receive(limit, timeoutInSeconds)
+```
+
+### Send batch
+
+```js
+const messages = [{ message: '1' }, { message: '2' }]
+await topic.sendBatch(messages)
+```
+
+### Schedule Message
+
+```js
+const dateToSend = new Date().toISOString()
+const message = 'Message'
+await topic.scheduleMessage(dateToSend, message)
+```
+
+### Schedule Messages
+
+```js
+const dateToSend = new Date().toISOString()
+const messages = [{ message: '1' }, { message: '2' }]
+await topic.scheduleMessages(dateToSend, messages)
+```
 
 ## Queue operations
 
 First, connect to the desired queue
 
 ```js
-const queue = namespace.queue(queueName)
+const queue = serviceBusClient.queue(queueName)
 ```
 
 ### Peek messages
