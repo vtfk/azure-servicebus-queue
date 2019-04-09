@@ -64,7 +64,7 @@ const messages = await topic.peekBySequenceNumber('<sequenceNumber>')
 ### Send message
 
 ```js
-const message = 'Message'
+const message = { body: 'message' }
 await topic.send(message)
 ```
 
@@ -79,7 +79,7 @@ const messages = await topic.receive(limit, timeoutInSeconds)
 ### Send batch
 
 ```js
-const messages = [{ message: '1' }, { message: '2' }]
+const messages = [{ body: '1' }, { body: '2' }]
 await topic.sendBatch(messages)
 ```
 
@@ -127,7 +127,7 @@ const messages = await queue.peekBySequenceNumber('<sequenceNumber>')
 ### Send message
 
 ```js
-const message = 'Message'
+const message = { body: 'message' }
 await queue.send(message)
 ```
 
@@ -142,7 +142,7 @@ const messages = await queue.receive(limit, timeoutInSeconds)
 ### Send batch
 
 ```js
-const messages = [{ message: '1' }, { message: '2' }]
+const messages = [{ body: '1' }, { body: '2' }]
 await queue.sendBatch(messages)
 ```
 
@@ -150,7 +150,7 @@ await queue.sendBatch(messages)
 
 ```js
 const dateToSend = new Date().toISOString()
-const message = 'Message'
+const message = { body: 'message' }
 await queue.scheduleMessage(dateToSend, message)
 ```
 
@@ -159,7 +159,7 @@ await queue.scheduleMessage(dateToSend, message)
 
 ```js
 const dateToSend = new Date().toISOString()
-const messages = [{ message: '1' }, { message: '2' }]
+const messages = [{ body: '1' }, { body: '2' }]
 await queue.scheduleMessages(dateToSend, messages)
 ```
 
