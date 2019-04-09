@@ -87,7 +87,7 @@ await topic.sendBatch(messages)
 
 ```js
 const dateToSend = new Date().toISOString()
-const message = 'Message'
+const message = { body: 'message' }
 await topic.scheduleMessage(dateToSend, message)
 ```
 
@@ -95,7 +95,7 @@ await topic.scheduleMessage(dateToSend, message)
 
 ```js
 const dateToSend = new Date().toISOString()
-const messages = [{ message: '1' }, { message: '2' }]
+const messages = [{ body: '1' }, { body: '2' }]
 await topic.scheduleMessages(dateToSend, messages)
 ```
 
