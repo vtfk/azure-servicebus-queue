@@ -61,6 +61,18 @@ module.exports = options => {
 
   return {
     close: () => closeServiceBusClient(),
+    subscription: (topicName, subscriptionName) => {
+      if (!topicName) {
+        throw Error('Missing required input: topicName')
+      }
+      if (!subscriptionName) {
+        throw Error('Missing required input: subscriptionName')
+      }
+      client = serviceBusClient.createSubscriptionClient(topicName, subscriptionName)
+      return {
+        // TODO: Subscription Client operations
+      }
+    },
     topic: topicName => {
       if (!topicName) {
         throw Error('Missing required input: topicName')

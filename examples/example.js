@@ -12,11 +12,11 @@
     const messages = await queue.peek()
     const receivedMessage = await queue.receive(1)
     await queue.send(message)
-    console.log(`Message sent:`)
+    console.log('Message sent:')
     log(message)
     console.log('Peeked message:')
     log(messages)
-    console.log('ReceivedMessage:')
+    console.log('Received message:')
     log(receivedMessage)
   } catch (error) {
     console.error(error)
