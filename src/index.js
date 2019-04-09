@@ -1,4 +1,4 @@
-const { ServiceBusClient } = require('@azure/service-bus')
+const { ServiceBusClient, ReceiveMode } = require('@azure/service-bus')
 
 module.exports = options => {
   if (!options) {
@@ -48,10 +48,15 @@ module.exports = options => {
     return sender.scheduleMessages(date, messages)
   }
 
-  function receive (limit = 1, timeoutInSeconds = 1) {
-    const receiver = client.createReceiver()
-    // TODO: Mark as complete i.e await messages[0].complete()
-    return receiver.receiveBatch(limit, timeoutInSeconds)
+  async function receive (limit = 1, timeoutInSeconds = 5) {
+    const receiver = client.createReceiver(ReceiveMode.peekLock)
+    const messages = []
+    for (let i = 0; i <= limit; i++) {
+      const message = await receiver.receiveMessages(1, timeoutInSeconds)
+      if (!message.length) return messages
+      messages.push(message[0].body)
+      await message[0].complete()
+    }
   }
 
   return {

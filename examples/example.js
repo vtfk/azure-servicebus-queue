@@ -7,9 +7,19 @@
     connectionString
   })
   const queue = serviceBusClient.queue(queueName)
+  const message = { body: 'Hello' }
   try {
     const messages = await queue.peek()
+    const receivedMessage = await queue.receive(1)
+    await queue.send(message)
+    console.log(`Message sent:`)
+    log(message)
+    console.log('Peeked message:')
     log(messages)
+    console.log('ReceivedMessage:')
+    log(receivedMessage)
+  } catch (error) {
+    console.error(error)
   } finally {
     await serviceBusClient.close()
   }
