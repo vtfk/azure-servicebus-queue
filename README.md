@@ -22,7 +22,7 @@ Get connection string for Service Bus & names for Queues/Topics/Subscriptions
 - To work with Topics, find the "Topics" tab right under "Entities" at **_your-servicebus-namespace_**, create a Topic. Go to **_your-servicebus-namespace_ > _your-topic_**, create subscriptions for the topic. Note down the names of the topic and subscriptions.
 
 ```js
-const namespace = require('./src/index')({
+const namespace = require('@vtfk/azure-servicebus-queue')({
   connectionString: '<Servicebus Connection String>'
 })
 ```
