@@ -2,6 +2,8 @@
 
 High-level API for Azure Servicebus Queue operations.
 
+Supports to send and receive messages >64kb by storing and retrieving from blob storage.
+
 Uses the [@azure/service-bus](https://www.npmjs.com/package/@azure/service-bus) SDK
 
 # Install
