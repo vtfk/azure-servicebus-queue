@@ -39,19 +39,24 @@ module.exports = options => {
     return client.peek(limit)
   }
 
+  async function sendBigMessage (message) {
+    if (!storageClient) {
+      throw Error('You need to initialize storage blob connection to send messages >64 kb')
+    }
+    const fileId = uuid() + '.json'
+    try {
+      await storageClient.writeText(fileId, JSON.stringify(message))
+      return fileId
+    } catch (error) {
+      throw error
+    }
+  }
+
   async function send (message) {
     const sender = client.createSender()
     if (messageSizeOverLimit(message)) {
-      if (!storageClient) {
-        throw Error('You need to initialize storage blob connection to send messages >64 kb')
-      }
-      const fileId = uuid() + '.json'
-      try {
-        await storageClient.writeText(fileId, JSON.stringify(message))
-        return sender.send({ body: { fileId } })
-      } catch (error) {
-        throw error
-      }
+      const fileId = await sendBigMessage(message)
+      return sender.send({ body: { fileId } })
     } else {
       return sender.send(message)
     }
