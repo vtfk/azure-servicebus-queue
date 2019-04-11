@@ -1,4 +1,10 @@
 const { ServiceBusClient, ReceiveMode } = require('@azure/service-bus')
+const storage = require('@vtfk/azure-storage-blob')
+const uuid = require('uuid/v4')
+
+function messageSizeOverLimit (s) {
+  return ~-encodeURI(JSON.stringify(s)).split(/%..|./).length >= 64000
+}
 
 module.exports = options => {
   if (!options) {
@@ -9,7 +15,12 @@ module.exports = options => {
   }
 
   const serviceBusClient = ServiceBusClient.createFromConnectionString(options.connectionString)
-  let client
+  let client, storageClient
+
+  if (options.storageConnectionString && options.storageContainerName) {
+    const storageConnection = storage({ connectionString: options.storageConnectionString })
+    storageClient = storageConnection.container(options.storageContainerName)
+  }
 
   async function closeServiceBusClient () {
     if (client) await client.close()
@@ -28,9 +39,22 @@ module.exports = options => {
     return client.peek(limit)
   }
 
-  function send (message) {
+  async function send (message) {
     const sender = client.createSender()
-    return sender.send(message)
+    if (messageSizeOverLimit(message)) {
+      if (!storageClient) {
+        throw Error('You need to initialize storage blob connection to send messages >64 kb')
+      }
+      const fileId = uuid() + '.json'
+      try {
+        await storageClient.writeText(fileId, JSON.stringify(message))
+        return sender.send({ body: { fileId } })
+      } catch (error) {
+        throw error
+      }
+    } else {
+      return sender.send(message)
+    }
   }
 
   function sendBatch (messages) {
@@ -48,13 +72,25 @@ module.exports = options => {
     return sender.scheduleMessages(date, messages)
   }
 
+  function readBigMessage (fileId) {
+    if (!storageClient) {
+      throw Error('You need to initialize storage blob connection to receive messages >64 kb')
+    }
+    return storageClient.read(fileId)
+  }
+
   async function receive (limit = 1, timeoutInSeconds = 5) {
     const receiver = client.createReceiver(ReceiveMode.peekLock)
     const messages = []
     for (let i = 0; i <= limit; i++) {
       const message = await receiver.receiveMessages(1, timeoutInSeconds)
       if (!message.length) return messages
-      messages.push(message[0].body)
+      if (message[0].body && message[0].body.fileId) {
+        const content = await readBigMessage(message[0].body.fileId)
+        messages.push(content)
+      } else {
+        messages.push(message[0].body)
+      }
       await message[0].complete()
     }
   }

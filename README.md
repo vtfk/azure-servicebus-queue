@@ -24,6 +24,10 @@ Get connection string for Service Bus & names for Queues/Topics/Subscriptions
 ```js
 const serviceBusClient = require('@vtfk/azure-servicebus-queue')({
   connectionString: '<Servicebus Connection String>'
+  /* Uncomment to send and receive messages >64kb
+    storageConnectionString: '<Blob Service SAS URL>'
+    storageContainerName: '<Container name>'
+  */
 })
 ```
 

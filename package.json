@@ -1,6 +1,6 @@
 {
   "name": "@vtfk/azure-servicebus-queue",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "High-level API for Azure Servicebus Queue operations",
   "main": "src/index.js",
   "author": "Jonas Enge <jonas.enge@gmail.com> (https://github.com/maccyber)",
@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "test": "standard && npm audit && ava",
-    "example": "node examples/example"
+    "example": "node examples/example",
+    "example-bigfile": "node examples/example-bigfile"
   },
   "keywords": [
     "sdk",
@@ -19,7 +20,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@azure/service-bus": "1.0.0-preview.2"
+    "@azure/service-bus": "1.0.0-preview.2",
+    "@vtfk/azure-storage-blob": "1.0.3",
+    "uuid": "3.3.2"
   },
   "repository": {
     "type": "git",
