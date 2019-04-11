@@ -92,7 +92,7 @@ module.exports = options => {
       if (!message.length) return messages
       if (message[0].body && message[0].body.fileId) {
         const content = await readBigMessage(message[0].body.fileId)
-        messages.push(content)
+        messages.push(JSON.parse(content))
       } else {
         messages.push(message[0].body)
       }
