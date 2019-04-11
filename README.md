@@ -169,8 +169,6 @@ await queue.scheduleMessages(dateToSend, messages)
 
 # Examples
 
-## Send/peek/recieve messages from queue
-
 See [examples/example.js](examples/example.js)
 
 To run `example.js` create file `.env` in project root with following content
