@@ -169,16 +169,20 @@ await queue.scheduleMessages(dateToSend, messages)
 
 # Examples
 
+## Send/peek/recieve messages from queue
+
 See [examples/example.js](examples/example.js)
 
 To run `example.js` create file `.env` in project root with following content
 
 ```
 QUEUE_NAME=<queue name>
-QUEUE_CONNECTION_STRING=<queue connection string url>
+QUEUE_CONNECTION_STRING=<Servicebus Connection String>
+BLOB_SERVICE_SAS_URL=<Blob Service SAS URL> # Only needed for bigfile example
+BLOB_CONTAINER_NAME=<Container name> # Only needed for bigfile example
 ```
 
-And run `npm run example`
+And run `npm run example` or `npm run example-bigfile` (to test with messages >64kb)
 
 # License
 
