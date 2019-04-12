@@ -3,8 +3,12 @@
   const log = data => console.log(JSON.stringify(data, null, 2))
   const connectionString = process.env.QUEUE_CONNECTION_STRING
   const queueName = process.env.QUEUE_NAME
+  const storageConnectionString = process.env.BLOB_SERVICE_SAS_URL
+  const storageContainerName = process.env.BLOB_CONTAINER_NAME
   const serviceBusClient = require('../src/index')({
-    connectionString
+    connectionString,
+    storageConnectionString,
+    storageContainerName
   })
   const queue = serviceBusClient.queue(queueName)
   const message = { body: 'Hello' }
