@@ -44,12 +44,8 @@ module.exports = options => {
       throw Error('You need to initialize storage blob connection to send messages >64 kb')
     }
     const fileId = uuid() + '.json'
-    try {
-      await storageClient.writeText(fileId, JSON.stringify(message))
-      return fileId
-    } catch (error) {
-      throw error
-    }
+    await storageClient.writeText(fileId, JSON.stringify(message))
+    return fileId
   }
 
   async function send (message) {
