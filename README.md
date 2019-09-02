@@ -169,6 +169,32 @@ const messages = [{ body: '1' }, { body: '2' }]
 await queue.scheduleMessages(dateToSend, messages)
 ```
 
+## Storage operations
+
+Inside storage you will find `readBigMessage` and `sendBigMessage`.  
+These will use the `storageConnectionString` and `storageContainerName` arguments to get the correct blob.
+
+### Send big messages
+
+Store a message and get the ID in return.
+
+```js
+const message = 'A message that is to big for the servicebus queue'
+const fileId = await serviceBusClient.storage.sendBigMessage(message)
+```
+
+### Read big messages
+
+Reads a message from the configured blob storage with a specified ID.  
+Useful if a function binding is used for listening to new messages.
+
+```js
+const fileId = '5266176d-dc5f-4304-b87e-5a4ef78a29b1.json'
+const message = await serviceBusClient.storage.readBigMessage(fileId)
+```
+
+Returns the content of the blob with that ID.
+
 # Examples
 
 See [examples/example.js](examples/example.js)
