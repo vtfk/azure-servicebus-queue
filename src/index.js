@@ -141,6 +141,10 @@ module.exports = options => {
         scheduleMessages: (date, messages) => scheduleMessages(date, messages),
         receive: (limit, timeoutInSeconds) => receive(limit, timeoutInSeconds)
       }
+    },
+    storage: {
+      readBigMessage: fileId => readBigMessage(fileId),
+      sendBigMessage: message => sendBigMessage(message)
     }
   }
 }
