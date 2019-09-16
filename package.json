@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/vtfk/azure-servicebus-queue#readme",
   "devDependencies": {
-    "ava": "2.3.0",
+    "ava": "2.4.0",
     "dotenv": "8.1.0",
     "standard": "14.1.0"
   }
