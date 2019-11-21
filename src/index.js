@@ -73,11 +73,18 @@ module.exports = options => {
     return sender.scheduleMessages(date, messages)
   }
 
-  function readBigMessage (fileId) {
+  function readBigMessage (fileId, remove) {
     if (!storageClient) {
       throw Error('You need to initialize storage blob connection to receive messages >64 kb')
     }
-    return storageClient.read(fileId)
+
+    const data = storageClient.read(fileId)
+
+    if (remove) {
+      storageClient.remove(fileId)
+    }
+
+    return data
   }
 
   async function receive (limit = 1, timeoutInSeconds = 5) {
@@ -87,7 +94,7 @@ module.exports = options => {
       const message = await receiver.receiveMessages(1, timeoutInSeconds)
       if (!message.length) return messages
       if (message[0].body && message[0].body.fileId) {
-        const content = await readBigMessage(message[0].body.fileId)
+        const content = await readBigMessage(message[0].body.fileId, true)
         messages.push(JSON.parse(content))
       } else {
         messages.push(message[0].body)
@@ -143,7 +150,7 @@ module.exports = options => {
       }
     },
     storage: {
-      readBigMessage: fileId => readBigMessage(fileId),
+      readBigMessage: (fileId, remove) => readBigMessage(fileId, remove === true || false),
       sendBigMessage: message => sendBigMessage(message)
     }
   }
